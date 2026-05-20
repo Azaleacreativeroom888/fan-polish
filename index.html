@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Komiksowy Świat — Polski Komiks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --crimson:     #8B1A1A;
+      --crimson-dk:  #5C0E0E;
+      --crimson-lt:  #B52929;
+      --cream:       #F5EDD8;
+      --cream-dk:    #E8D9B8;
+      --gold:        #C9962A;
+      --gold-lt:     #E8BF5A;
+      --ink:         #1A1008;
+      --ink-mid:     #3A2A18;
+      --fog:         #F9F4EB;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Libre Baskerville', serif;
+      background: var(--fog);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ─── ORNAMENT SVG HELPERS ─── */
+    .ornament {
+      display: block;
+      width: 100%;
+      overflow: visible;
+    }
+
+    /* ─── NAVIGATION ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--crimson-dk);
+      border-bottom: 2px solid var(--gold);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--cream);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--gold-lt);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cream-dk);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold-lt); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      background: var(--crimson-dk);
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* Geometric pattern overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 40px,
+          rgba(201, 150, 42, 0.06) 40px,
+          rgba(201, 150, 42, 0.06) 42px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 40px,
+          rgba(201, 150, 42, 0.06) 40px,
+          rgba(201, 150, 42, 0.06) 42px
+        );
+      pointer-events: none;
+    }
+
+    .hero-left {
+      padding: 8rem 3rem 6rem 6rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--cream);
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-lt);
+      display: block;
+    }
+
+    .hero-subtitle {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      color: rgba(245, 237, 216, 0.65);
+      margin-top: 1.5rem;
+      margin-bottom: 2.5rem;
+      max-width: 380px;
+      line-height: 1.9;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 1rem 2.2rem;
+      background: var(--gold);
+      color: var(--ink);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-lt);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 1rem 2.2rem;
+      background: transparent;
+      color: var(--cream);
+      border: 1.5px solid rgba(245, 237, 216, 0.4);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--cream);
+      color: var(--cream);
+    }
+
+    /* Hero right — decorative comic panels */
+    .hero-right {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .panel-stack {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 90%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 8px;
+      height: 70vh;
+      padding-right: 4rem;
+    }
+
+    .comic-panel {
+      background: var(--cream);
+      border: 3px solid var(--gold);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding: 1rem;
+      transition: transform 0.3s;
+    }
+
+    .comic-panel:hover { transform: scale(1.01); }
+
+    .comic-panel.tall {
+      grid-row: span 2;
+    }
+
+    .panel-inner {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* SVG illustrations inside panels */
+    .panel-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .panel-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--crimson);
+      color: var(--cream);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.6rem;
+      font-weight: 600;
+    }
+
+    /* Speed lines decoration */
+    .speed-line {
+      position: absolute;
+      background: rgba(201, 150, 42, 0.15);
+      transform-origin: left center;
+    }
+
+    /* ─── DIVIDER ORNAMENT ─── */
+    .divider {
+      text-align: center;
+      padding: 3rem 0;
+      overflow: hidden;
+    }
+
+    /* ─── SECTION: NAJNOWSZE KOMIKSY ─── */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--cream-dk);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--crimson-dk);
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .section-link {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .section-link::after {
+      content: '→';
+      font-size: 1rem;
+    }
+
+    .section-link:hover { color: var(--gold); }
+
+    /* ─── KOMIKS CARDS ─── */
+    .comics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .comic-card {
+      background: white;
+      border: 1px solid var(--cream-dk);
+      overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+
+    .comic-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(92, 14, 14, 0.15);
+    }
+
+    .comic-thumb {
+      aspect-ratio: 3/4;
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+      border-bottom: 3px solid var(--crimson);
+    }
+
+    .comic-thumb svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .comic-info {
+      padding: 0.75rem 1rem 1rem;
+    }
+
+    .comic-tag {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 0.35rem;
+    }
+
+    .comic-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+    }
+
+    .comic-author {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem;
+      color: var(--ink-mid);
+      letter-spacing: 0.05em;
+      opacity: 0.7;
+    }
+
+    /* ─── POLISH BANNER ─── */
+    .polish-banner {
+      background: var(--crimson);
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 0;
+      margin: 2rem 0;
+    }
+
+    .polish-banner::before,
+    .polish-banner::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 120px;
+      background: var(--crimson-dk);
+      clip-path: polygon(0 0, 60% 0, 100% 100%, 0 100%);
+    }
+
+    .polish-banner::before { left: 0; }
+    .polish-banner::after {
+      right: 0;
+      clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    .banner-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      padding: 0 2rem;
+    }
+
+    .banner-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold-lt);
+      margin-bottom: 1rem;
+    }
+
+    .banner-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      font-weight: 900;
+      color: var(--cream);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+
+    .banner-headline em {
+      font-style: italic;
+      color: var(--gold-lt);
+    }
+
+    .banner-body {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: rgba(245, 237, 216, 0.75);
+      line-height: 1.9;
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* ─── BLOG PREVIEW ─── */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .blog-card {
+      background: white;
+      border: 1px solid var(--cream-dk);
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: transform 0.2s;
+    }
+
+    .blog-card:hover { transform: translateY(-3px); }
+
+    .blog-card.featured .blog-thumb {
+      height: 220px;
+    }
+
+    .blog-thumb {
+      height: 140px;
+      background: var(--crimson-dk);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blog-thumb svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .blog-content {
+      padding: 1.25rem;
+    }
+
+    .blog-meta {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 0.5rem;
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .blog-meta span:not(:first-child)::before {
+      content: '·';
+      margin-right: 0.75rem;
+      color: var(--cream-dk);
+    }
+
+    .blog-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+
+    .blog-card.featured .blog-title {
+      font-size: 1.3rem;
+    }
+
+    .blog-excerpt {
+      font-size: 0.8rem;
+      color: var(--ink-mid);
+      margin-top: 0.5rem;
+      line-height: 1.7;
+      opacity: 0.8;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ─── GALLERY STRIP ─── */
+    .gallery-strip {
+      background: var(--ink);
+      padding: 3rem 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .strip-scroll {
+      display: flex;
+      gap: 8px;
+      padding: 0 2rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .strip-scroll::-webkit-scrollbar { display: none; }
+
+    .strip-item {
+      flex: 0 0 160px;
+      height: 200px;
+      background: var(--crimson-dk);
+      border: 2px solid rgba(201, 150, 42, 0.3);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .strip-item svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink);
+      color: var(--cream-dk);
+      padding: 4rem 2rem 2rem;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(245, 237, 216, 0.15);
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--cream);
+      margin-bottom: 1rem;
+    }
+
+    .footer-logo span { color: var(--gold-lt); }
+
+    .footer-desc {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      line-height: 1.8;
+      opacity: 0.6;
+      max-width: 240px;
+    }
+
+    .footer-col h4 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 0.6rem;
+    }
+
+    .footer-col ul a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: rgba(245, 237, 216, 0.6);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul a:hover { color: var(--cream); }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 1.5rem auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      opacity: 0.4;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-left > * {
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-eyebrow { animation-delay: 0.1s; }
+    .hero-title   { animation-delay: 0.25s; }
+    .hero-subtitle { animation-delay: 0.4s; }
+    .hero-actions  { animation-delay: 0.55s; }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { padding: 7rem 1.5rem 4rem; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      nav { padding: 0 1rem; }
+      .nav-links { gap: 1rem; }
+    }
+
+    @media (max-width: 480px) {
+      .comics-grid { grid-template-columns: 1fr 1fr; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .nav-links li:not(:first-child):not(:last-child) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAVIGATION ─── -->
+<nav>
+  <a href="index.html" class="nav-logo">Komiks<span>owy</span> Świat</a>
+  <ul class="nav-links">
+    <li><a href="gallery.html">Galeria</a></li>
+    <li><a href="translation.html">Tłumaczenia</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Kontakt</a></li>
+  </ul>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Polski Komiks &amp; Manga</p>
+    <h1 class="hero-title">
+      Świat<br>pełen
+      <em>historii</em>
+    </h1>
+    <p class="hero-subtitle">
+      Odkryj mangę po polsku — oryginalne komiksy,
+      tłumaczenia i artykuły o kulturze komiksowej.
+      Sztuka bez granic językowych.
+    </p>
+    <div class="hero-actions">
+      <a href="gallery.html" class="btn-primary">Przeglądaj galerię</a>
+      <a href="translation.html" class="btn-outline">Dziennik tłumaczeń</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="panel-stack">
+      <!-- Panel 1: tall left -->
+      <div class="comic-panel tall">
+        <div class="panel-inner">
+          <svg viewBox="0 0 200 420" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="200" height="420" fill="#F5EDD8"/>
+            <!-- Speed lines -->
+            <line x1="100" y1="210" x2="0" y2="0" stroke="#C9962A" stroke-width="0.5" opacity="0.3"/>
+            <line x1="100" y1="210" x2="50" y2="0" stroke="#C9962A" stroke-width="0.5" opacity="0.3"/>
+            <line x1="100" y1="210" x2="100" y2="0" stroke="#C9962A" stroke-width="0.5" opacity="0.3"/>
+            <line x1="100" y1="210" x2="150" y2="0" stroke="#C9962A" stroke-width="0.5" opacity="0.3"/>
+            <line x1="100" y1="210" x2="200" y2="0" stroke="#C9962A" stroke-width="0.5" opacity="0.3"/>
+            <line x1="100" y1="210" x2="0" y2="420" stroke="#C9962A" stroke-width="0.5" opacity="0.3"/>
+            <line x1="100" y1="210" x2="200" y2="420" stroke="#C9962A" stroke-width="0.5" opacity="0.3"/>
+            <!-- Character silhouette -->
+            <ellipse cx="100" cy="130" rx="38" ry="44" fill="#5C0E0E"/>
+            <rect x="68" y="168" width="64" height="90" rx="4" fill="#5C0E0E"/>
+            <!-- Scarf -->
+            <path d="M68 185 Q100 200 132 185 L128 195 Q100 212 72 195 Z" fill="#C9962A"/>
+            <!-- Eyes -->
+            <ellipse cx="86" cy="128" rx="7" ry="9" fill="#F5EDD8"/>
+            <ellipse cx="114" cy="128" rx="7" ry="9" fill="#F5EDD8"/>
+            <ellipse cx="86" cy="130" rx="4" ry="5" fill="#1A1008"/>
+            <ellipse cx="114" cy="130" rx="4" ry="5" fill="#1A1008"/>
+            <!-- Hair -->
+            <path d="M62 120 Q65 80 100 75 Q135 80 138 120 L130 110 Q100 90 70 110 Z" fill="#1A1008"/>
+            <!-- Geometric border -->
+            <rect x="4" y="4" width="192" height="412" fill="none" stroke="#C9962A" stroke-width="1.5"/>
+            <rect x="8" y="8" width="184" height="404" fill="none" stroke="#C9962A" stroke-width="0.5" opacity="0.5"/>
+            <!-- Corner ornaments -->
+            <polygon points="4,4 20,4 4,20" fill="#C9962A" opacity="0.6"/>
+            <polygon points="196,4 180,4 196,20" fill="#C9962A" opacity="0.6"/>
+            <polygon points="4,416 20,416 4,400" fill="#C9962A" opacity="0.6"/>
+            <polygon points="196,416 180,416 196,400" fill="#C9962A" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="panel-label">Nowy rozdział</div>
+      </div>
+
+      <!-- Panel 2: top right -->
+      <div class="comic-panel">
+        <div class="panel-inner">
+          <svg 
