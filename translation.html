@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dziennik Tłumaczeń — Komiksowy Świat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Libre+Baskerville:ital,wght@0,400;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --crimson:    #8B1A1A;
+      --crimson-dk: #5C0E0E;
+      --gold:       #C9962A;
+      --gold-lt:    #E8BF5A;
+      --cream:      #F5EDD8;
+      --cream-dk:   #E8D9B8;
+      --ink:        #1A1008;
+      --ink-mid:    #3A2A18;
+      --fog:        #F9F4EB;
+    }
+
+    body {
+      font-family: 'Libre Baskerville', serif;
+      background: var(--fog);
+      color: var(--ink);
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--crimson-dk);
+      border-bottom: 2px solid var(--gold);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--cream);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold-lt); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cream-dk);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold-lt); }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      background: var(--crimson-dk);
+      padding: 6rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 40px,
+          rgba(201,150,42,0.05) 40px, rgba(201,150,42,0.05) 41px),
+        repeating-linear-gradient(-45deg, transparent, transparent 40px,
+          rgba(201,150,42,0.05) 40px, rgba(201,150,42,0.05) 41px);
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 900;
+      color: var(--cream);
+      position: relative;
+    }
+    .page-header h1 em { font-style: italic; color: var(--gold-lt); }
+    .page-header p {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: rgba(245,237,216,0.6);
+      margin-top: 0.75rem;
+      position: relative;
+    }
+    .ornament {
+      margin-top: 1.5rem;
+      position: relative;
+    }
+
+    /* ─── CONTAINER ─── */
+    .container {
+      max-width: 720px;
+      margin: 3.5rem auto 5rem;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    /* ─── ENTRY CARD ─── */
+    .entry-card {
+      background: #fff;
+      border: 1.5px solid var(--cream-dk);
+      border-top: 4px solid var(--crimson);
+      box-shadow: 4px 4px 0 var(--cream-dk);
+      overflow: hidden;
+      transition: transform 0.18s, box-shadow 0.18s;
+      animation: fadeUp 0.4s ease both;
+    }
+    .entry-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--cream-dk);
+    }
+    .entry-card:nth-child(1){animation-delay:0.05s}
+    .entry-card:nth-child(2){animation-delay:0.10s}
+    .entry-card:nth-child(3){animation-delay:0.15s}
+    .entry-card:nth-child(4){animation-delay:0.20s}
+    .entry-card:nth-child(5){animation-delay:0.25s}
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* カードヘッダー */
+    .entry-header {
+      background: var(--cream);
+      border-bottom: 1.5px solid var(--cream-dk);
+      padding: 0.9rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .entry-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      flex: 1;
+      line-height: 1.3;
+    }
+    .entry-tag {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: var(--crimson);
+      color: var(--cream);
+      padding: 0.25rem 0.65rem;
+      white-space: nowrap;
+    }
+
+    /* セクション */
+    .entry-body { padding: 0; }
+
+    .section {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px dashed rgba(139,26,26,0.15);
+    }
+    .section:last-child { border-bottom: none; }
+
+    .section-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 0.5rem;
+    }
+
+    .section p {
+      font-size: 0.88rem;
+      line-height: 1.85;
+      color: var(--ink-mid);
+    }
+    .section p + p { margin-top: 0.5rem; }
+    .section p strong { color: var(--crimson); font-weight: 700; }
+
+    /* メモセクション */
+    .section.memo {
+      background: #fdf7ee;
+      border-left: 3px solid var(--gold);
+    }
+    .section.memo .section-label { color: var(--gold); }
+    .section.memo p { font-size: 0.83rem; color: #5a3c1a; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink);
+      color: var(--cream-dk);
+      text-align: center;
+      padding: 2rem;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+    }
+    footer a { color: var(--gold-lt); text-decoration: none; }
+
+    @media (max-width: 500px) {
+      .entry-header { flex-wrap: wrap; }
+      nav { padding: 0 1rem; }
+      .nav-links { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Komiks<span>owy</span> Świat</a>
+  <ul class="nav-links">
+    <li><a href="gallery.html">Galeria</a></li>
+    <li><a href="translation.html" class="active">Tłumaczenia</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Kontakt</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <h1>Dziennik <em>tłumaczeń</em></h1>
+  <p>Notatki z pracy nad przekładem — słowa, decyzje, wątpliwości.</p>
+  <div class="ornament">
+    <svg viewBox="0 0 400 20" xmlns="http://www.w3.org/2000/svg" height="20" style="width:100%;max-width:400px;opacity:0.6">
+      <line x1="0" y1="10" x2="170" y2="10" stroke="#C9962A" stroke-width="0.5"/>
+      <circle cx="190" cy="10" r="3" fill="#C9962A"/>
+      <circle cx="200" cy="10" r="6" fill="none" stroke="#C9962A" stroke-width="1"/>
+      <circle cx="210" cy="10" r="3" fill="#C9962A"/>
+      <line x1="230" y1="10" x2="400" y2="10" stroke="#C9962A" stroke-width="0.5"/>
+    </svg>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="entry-card">
+    <div class="entry-header">
+      <h2>„Jak to przetłumaczyć?" — problem z ドキドキ</h2>
+      <span class="entry-tag">Przekład</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">Oryginał (japoński)</div>
+        <p>ドキドキする — onomatopeja oznaczająca bicie serca, podniecenie, nieśmiałe oczekiwanie.</p>
+      </div>
+      <div class="section">
+        <div class="section-label">Propozycja tłumaczenia</div>
+        <p>„Serce mi wali." / „Serce mi podskakuje." / „Czuję, jak serce mi drży."</p>
+      </div>
+      <div class="section memo">
+        <div class="section-label">📝 Notatka</div>
+        <p>Żadna z opcji nie oddaje lekkości i pozytywnego zabarwienia oryginału. <strong>„Drżenie serca"</strong> brzmi zbyt dramatycznie po polsku. Rozważam zostawienie emocji w warstwie graficznej — bez przekładu słownego.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry-card">
+    <div class="entry-header">
+      <h2>「even when」— oś zdania</h2>
+      <span class="entry-tag">Przekład</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">Oryginał</div>
+        <p>The protagonist kept drawing, even when no one believed in her story.</p>
+      </div>
+      <div class="section">
+        <div class="section-label">Tłumaczenie (po poprawce)</div>
+        <p>Bohaterka rysowała dalej, nawet gdy nikt nie wierzył w jej historię.</p>
+      </div>
+      <div class="section memo">
+        <div class="section-label">📝 Notatka</div>
+        <p><strong>„even when"</strong> to oś całego zdania — kontrast między wytrwałością a brakiem wsparcia. Po polsku „nawet gdy" dobrze przenosi ten ciężar. Pierwotnie napisałam „mimo że nikt nie wierzył", ale „nawet gdy" jest bliższe rytmowi oryginału.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry-card">
+    <div class="entry-header">
+      <h2>stigma — piętno czy stygmat?</h2>
+      <span class="entry-tag">Słowo</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">Definicja</div>
+        <p><em>Stigma</em> — społeczne naznaczenie, negatywna etykieta przypisywana osobie lub grupie.</p>
+        <p>Przykład: <em>the stigma around mental illness</em> — piętno związane z chorobą psychiczną.</p>
+      </div>
+      <div class="section memo">
+        <div class="section-label">📝 Notatka</div>
+        <p>„Stygmat" brzmi bardziej literacko i religijnie. „Piętno" — bardziej codziennie i społecznie. W przekładzie tekstów komiksowych preferuję <strong>„piętno"</strong>, chyba że kontekst jest wyraźnie metaforyczny.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry-card">
+    <div class="entry-header">
+      <h2>„moment to moment" — chwila po chwili</h2>
+      <span class="entry-tag">Przekład</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">Oryginał</div>
+        <p>Time. How it passes, from moment to moment.</p>
+      </div>
+      <div class="section">
+        <div class="section-label">Tłumaczenie (po poprawce)</div>
+        <p>Czas. Jak przemija — z chwili w chwilę.</p>
+      </div>
+      <div class="section memo">
+        <div class="section-label">📝 Notatka</div>
+        <p>Pierwotna wersja: „z sekundy na sekundę" — za techniczne. „Z chwili w chwilę" oddaje poetyckość oryginału i pasuje do tonu narracji. <strong>„Moment"</strong> w tym kontekście to odcinek czasu, nie mgnienie.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry-card">
+    <div class="entry-header">
+      <h2>pseudo-famous — półsławny?</h2>
+      <span class="entry-tag">Słowo</span>
+    </div>
+    <div class="entry-body">
+      <div class="section">
+        <div class="section-label">Oryginał (angielski)</div>
+        <p><em>pseudo-famous</em> — znany, ale jakby nie do końca; sławny w wąskim kręgu lub tylko w internecie.</p>
+      </div>
+      <div class="section memo">
+        <div class="section-label">📝 Notatka</div>
+        <p>Po polsku nie ma zgrabnego odpowiednika. „Półsławny" brzmi niezgrabnie. Na razie używam <strong>„internetowo znany"</strong> lub opisowo: „znany w pewnych kręgach". Zostaje jako otwarte pytanie.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- エントリー追加はここにコピペで -->
+
+</div>
+
+<footer>
+  <p>© 2025 <a href="index.html">Komiksowy Świat</a> — Wszelkie tłumaczenia są dziełem własnym.</p>
+</footer>
+
+</body>
+</html>
