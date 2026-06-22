@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Komiksowy Świat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Libre+Baskerville:ital,wght@0,400;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --crimson:    #8B1A1A;
+      --crimson-dk: #5C0E0E;
+      --gold:       #C9962A;
+      --gold-lt:    #E8BF5A;
+      --cream:      #F5EDD8;
+      --cream-dk:   #E8D9B8;
+      --ink:        #1A1008;
+      --ink-mid:    #3A2A18;
+      --fog:        #F9F4EB;
+    }
+
+    body {
+      font-family: 'Libre Baskerville', serif;
+      background: var(--fog);
+      color: var(--ink);
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--crimson-dk);
+      border-bottom: 2px solid var(--gold);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--cream);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold-lt); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cream-dk);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold-lt); }
+
+    .page-header {
+      background: var(--crimson-dk);
+      padding: 6rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 40px,
+          rgba(201,150,42,0.05) 40px, rgba(201,150,42,0.05) 41px),
+        repeating-linear-gradient(-45deg, transparent, transparent 40px,
+          rgba(201,150,42,0.05) 40px, rgba(201,150,42,0.05) 41px);
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 900;
+      color: var(--cream);
+      position: relative;
+    }
+    .page-header h1 em { font-style: italic; color: var(--gold-lt); }
+    .page-header-ornament { margin-top: 1.5rem; position: relative; }
+
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 0 2rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--cream-dk);
+    }
+    .entry:last-child { border-bottom: none; }
+
+    .entry-date { padding-top: 0.15rem; text-align: right; }
+    .entry-date .day {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--crimson);
+      line-height: 1;
+      display: block;
+    }
+    .entry-date .month-year {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      opacity: 0.5;
+      display: block;
+      margin-top: 0.3rem;
+    }
+
+    .entry-body {
+      padding-left: 1.5rem;
+      border-left: 2px solid rgba(201,150,42,0.25);
+    }
+    .entry-body p {
+      font-size: 0.95rem;
+      line-height: 1.95;
+      color: var(--ink-mid);
+    }
+    .entry-body p + p { margin-top: 0.9rem; }
+    .entry-body em { font-style: italic; color: var(--crimson); }
+
+    footer {
+      background: var(--ink);
+      color: var(--cream-dk);
+      text-align: center;
+      padding: 2rem;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+    }
+    footer a { color: var(--gold-lt); text-decoration: none; }
+
+    @media (max-width: 500px) {
+      .entry { grid-template-columns: 1fr; gap: 0.5rem; }
+      .entry-date { text-align: left; display: flex; align-items: baseline; gap: 0.6rem; }
+      .entry-date .day { font-size: 1.4rem; }
+      .entry-body { padding-left: 0; border-left: none; border-top: 1px solid rgba(201,150,42,0.2); padding-top: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Komiks<span>owy</span> Świat</a>
+  <ul class="nav-links">
+    <li><a href="gallery.html">Galeria</a></li>
+    <li><a href="translation.html">Tłumaczenia</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="contact.html">Kontakt</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <h1>Dziennik <em>komiksowy</em></h1>
+  <div class="page-header-ornament">
+    <svg viewBox="0 0 400 20" xmlns="http://www.w3.org/2000/svg" height="20" style="width:100%;max-width:400px;opacity:0.6">
+      <line x1="0" y1="10" x2="170" y2="10" stroke="#C9962A" stroke-width="0.5"/>
+      <circle cx="190" cy="10" r="3" fill="#C9962A"/>
+      <circle cx="200" cy="10" r="6" fill="none" stroke="#C9962A" stroke-width="1"/>
+      <circle cx="210" cy="10" r="3" fill="#C9962A"/>
+      <line x1="230" y1="10" x2="400" y2="10" stroke="#C9962A" stroke-width="0.5"/>
+    </svg>
+  </div>
+</div>
+
+<main>
+
+  <article class="entry">
+    <div class="entry-date">
+      <span class="day">15</span>
+      <span class="month-year">Maj 2025</span>
+    </div>
+    <div class="entry-body">
+      <p>Skończyłam dziś czwarty rozdział. Scena z mostkiem zajęła mi dużo więcej czasu niż myślałam — perspektywa wciąż sprawia mi kłopoty. Ale efekt końcowy chyba jest w porządku.</p>
+      <p>Jutro zaczynam szkice do rozdziału piątego. Mam już w głowie kilka ciekawych ujęć.</p>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="entry-date">
+      <span class="day">08</span>
+      <span class="month-year">Maj 2025</span>
+    </div>
+    <div class="entry-body">
+      <p>Długo myślałam nad tym, jak przetłumaczyć <em>ドキドキ</em> na polski. „Bicie serca"? „Trzepotanie"? Żadne z nich nie oddaje tego lekkiego, radosnego niepokoju.</p>
+      <p>W końcu zostawiłam to jako kontekst graficzny — jeden kadr mówi więcej niż tysiąc słów.</p>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="entry-date">
+      <span class="day">02</span>
+      <span class="month-year">Maj 2025</span>
+    </div>
+    <div class="entry-body">
+      <p>Przeczytałam kilka tomów <em>Dungeon Meshi</em>. Niesamowite, jak Ryoko Kui potrafi łączyć humor z bardzo głęboką narracją o przeżyciu i stracie.</p>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="entry-date">
+      <span class="day">24</span>
+      <span class="month-year">Kwi 2025</span>
+    </div>
+    <div class="entry-body">
+      <p>Nowy tusz dotarł. Kreski wychodzą zdecydowanie czystsze — chyba przez długi czas pracowałam ze złym narzędziem i nawet o tym nie wiedziałam.</p>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="entry-date">
+      <span class="day">17</span>
+      <span class="month-year">Kwi 2025</span>
+    </div>
+    <div class="entry-body">
+      <p>Wzięłam się za przerabianie starych stron. Część z nich była naprawdę nieśmiała — brakowało mi wtedy odwagi, żeby mocniej kontrastować czerń i biel.</p>
+      <p>Teraz widzę to inaczej. Pustka też jest elementem kompozycji.</p>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="entry-date">
+      <span class="day">05</span>
+      <span class="month-year">Kwi 2025</span>
+    </div>
+    <div class="entry-body">
+      <p>Otworzyłam dziś tę stronę. Nie wiem, czy ktokolwiek ją znajdzie, ale chciałam mieć miejsce, gdzie mogę pisać o komiksach po polsku — bez algorytmów, bez polubień. Po prostu.</p>
+    </div>
+  </article>
+
+</main>
+
+<footer>
+  <p>© 2025 <a href="index.html">Komiksowy Świat</a></p>
+</footer>
+
+</body>
+</html>
