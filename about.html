@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O stronie — Komiksowy Świat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Libre+Baskerville:ital,wght@0,400;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --crimson:    #8B1A1A;
+      --crimson-dk: #5C0E0E;
+      --gold:       #C9962A;
+      --gold-lt:    #E8BF5A;
+      --cream:      #F5EDD8;
+      --cream-dk:   #E8D9B8;
+      --ink:        #1A1008;
+      --ink-mid:    #3A2A18;
+      --fog:        #F9F4EB;
+    }
+
+    body {
+      font-family: 'Libre Baskerville', serif;
+      background: var(--fog);
+      color: var(--ink);
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--crimson-dk);
+      border-bottom: 2px solid var(--gold);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--cream);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold-lt); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cream-dk);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold-lt); }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      background: var(--crimson-dk);
+      padding: 6rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 40px,
+          rgba(201,150,42,0.05) 40px, rgba(201,150,42,0.05) 41px),
+        repeating-linear-gradient(-45deg, transparent, transparent 40px,
+          rgba(201,150,42,0.05) 40px, rgba(201,150,42,0.05) 41px);
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 900;
+      color: var(--cream);
+      position: relative;
+    }
+    .page-header h1 em { font-style: italic; color: var(--gold-lt); }
+    .page-header p {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: rgba(245,237,216,0.6);
+      margin-top: 0.75rem;
+      position: relative;
+    }
+    .ornament { margin-top: 1.5rem; }
+
+    /* ─── MAIN ─── */
+    .main-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 6rem;
+    }
+
+    /* ─── PROFILE BLOCK ─── */
+    .profile-block {
+      background: #fff;
+      border: 1.5px solid var(--cream-dk);
+      border-top: 4px solid var(--crimson);
+      padding: 2rem 2rem 2rem 2.25rem;
+      box-shadow: 4px 4px 0 var(--cream-dk);
+      margin-bottom: 2.5rem;
+    }
+    .profile-block p {
+      font-size: 0.92rem;
+      line-height: 1.95;
+      color: var(--ink-mid);
+    }
+    .profile-block p + p { margin-top: 0.85rem; }
+    .profile-block em { font-style: italic; color: var(--crimson); }
+
+    /* ─── SECTION LABEL ─── */
+    .section-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      opacity: 0.6;
+      margin-bottom: 1rem;
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--cream-dk);
+    }
+
+    /* ─── LINK GRID ─── */
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      background: #fff;
+      border: 1.5px solid var(--cream-dk);
+      border-left: 4px solid var(--crimson);
+      padding: 0.9rem 1rem;
+      box-shadow: 3px 3px 0 var(--cream-dk);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .link-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--cream-dk);
+    }
+
+    .link-icon {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: var(--cream);
+      border: 1.5px solid var(--cream-dk);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .link-text { flex: 1; min-width: 0; }
+    .link-name {
+      display: block;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      margin-bottom: 0.15rem;
+    }
+    .link-desc {
+      display: block;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 300;
+      color: var(--ink-mid);
+      opacity: 0.65;
+      letter-spacing: 0.03em;
+    }
+    .link-arrow {
+      color: var(--crimson);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .link-card:hover .link-arrow { transform: translateX(3px); }
+
+    /* ─── FORM CARD ─── */
+    .form-card {
+      background: #fff;
+      border: 1.5px solid var(--cream-dk);
+      border-top: 4px solid var(--gold);
+      padding: 2rem 2rem;
+      box-shadow: 4px 4px 0 var(--cream-dk);
+      margin-top: 0.5rem;
+    }
+
+    .form-intro {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--ink-mid);
+      line-height: 1.85;
+      margin-bottom: 1.75rem;
+      opacity: 0.85;
+    }
+
+    .form-group { margin-bottom: 1.25rem; }
+
+    .form-label {
+      display: block;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      opacity: 0.7;
+      margin-bottom: 0.5rem;
+    }
+    .required { color: var(--crimson); }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      background: var(--fog);
+      border: 1.5px solid var(--cream-dk);
+      color: var(--ink);
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.88rem;
+      padding: 0.7rem 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: rgba(26,16,8,0.25);
+      font-style: italic;
+    }
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 3px rgba(139,26,26,0.1);
+    }
+    .form-textarea { resize: vertical; min-height: 130px; }
+
+    .form-submit {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.2rem;
+      background: var(--crimson);
+      color: var(--cream);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 0.5rem;
+    }
+    .form-submit:hover {
+      background: var(--crimson-dk);
+      transform: translateY(-1px);
+    }
+    .form-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .form-success {
+      background: #f0faf2;
+      border: 1.5px solid #4a9e5c;
+      padding: 1rem 1.25rem;
+      text-align: center;
+      color: #2e6b3a;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+    }
+
+    .form-error-global {
+      background: #fff0f0;
+      border: 1.5px solid var(--crimson);
+      padding: 0.75rem 1rem;
+      color: var(--crimson);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    /* ─── NOTICE ─── */
+    .notice {
+      margin-top: 3rem;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--cream-dk);
+      border-left: 3px solid var(--gold);
+      background: #fff;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      line-height: 1.85;
+      color: var(--ink-mid);
+      opacity: 0.75;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink);
+      color: var(--cream-dk);
+      text-align: center;
+      padding: 2rem;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+    }
+    footer a { color: var(--gold-lt); text-decoration: none; }
+
+    @media (max-width: 560px) {
+      .link-grid { grid-template-columns: 1fr; }
+      .form-card { padding: 1.5rem 1.25rem; }
+      nav { padding: 0 1rem; }
+      .nav-links { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Komiks<span>owy</span> Świat</a>
+  <ul class="nav-links">
+    <li><a href="gallery.html">Galeria</a></li>
+    <li><a href="translation.html">Tłumaczenia</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="about.html" class="active">Kontakt</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <h1>O <em>stronie</em></h1>
+  <p>Kim jestem i gdzie mnie znajdziesz.</p>
+  <div class="ornament">
+    <svg viewBox="0 0 400 20" xmlns="http://www.w3.org/2000/svg" height="20" style="width:100%;max-width:400px;opacity:0.6">
+      <line x1="0" y1="10" x2="170" y2="10" stroke="#C9962A" stroke-width="0.5"/>
+      <circle cx="190" cy="10" r="3" fill="#C9962A"/>
+      <circle cx="200" cy="10" r="6" fill="none" stroke="#C9962A" stroke-width="1"/>
+      <circle cx="210" cy="10" r="3" fill="#C9962A"/>
+      <line x1="230" y1="10" x2="400" y2="10" stroke="#C9962A" stroke-width="0.5"/>
+    </svg>
+  </div>
+</div>
+
+<main class="main-wrap">
+
+  <!-- ─── PROFILE ─── -->
+  <div class="profile-block">
+    <p>
+      Witaj na <em>Komiksowym Świecie</em> — miejscu, gdzie manga spotyka się z językiem polskim.
+      Tworzę oryginalne komiksy, tłumaczę, piszę o kulturze komiksowej i dzielę się
+      notatkami z pracy translatorskiej.
+    </p>
+    <p>
+      Działam też jako <em>Azalea72</em> — rysowniczka i ilustratorka.
+      Publikuję mangę na Jump Rookie i DaysNEO, ilustracje na Pixiv,
+      a prozę na Kakuyomu. Ta strona to mój kącik po polsku.
+    </p>
+  </div>
+
+  <!-- ─── MANGA & ILLUSTRATION ─── -->
+  <p class="section-label">Manga i ilustracja</p>
+  <div class="link-grid">
+
+    <a class="link-card" href="https://rookie.shonenjump.com/users/14728546961183734555" target="_blank" rel="noopener">
+      <div class="link-icon">📚</div>
+      <div class="link-text">
+        <span class="link-name">Jump Rookie</span>
+        <span class="link-desc">Oryginalna manga</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://daysneo.com/author/Sam333333Sam/" target="_blank" rel="noopener">
+      <div class="link-icon">🌙</div>
+      <div class="link-text">
+        <span class="link-name">DaysNEO</span>
+        <span class="link-desc">Platforma publikacji mangi</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://www.pixiv.net/users/105728284" target="_blank" rel="noopener">
+      <div class="link-icon">🎨</div>
+      <div class="link-text">
+        <span class="link-name">Pixiv</span>
+        <span class="link-desc">Ilustracje i fan art</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+  </div>
+
+  <!-- ─── SOCIAL & OTHER ─── -->
+  <p class="section-label">Social i inne</p>
+  <div class="link-grid">
+
+    <a class="link-card" href="https://bsky.app/profile/azaleaazalea88.bsky.social" target="_blank" rel="noopener">
+      <div class="link-icon">🦋</div>
+      <div class="link-text">
+        <span class="link-name">Bluesky</span>
+        <span class="link-desc">Aktualizacje i ogłoszenia</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://kakuyomu.jp/users/azalea_azalea72" target="_blank" rel="noopener">
+      <div class="link-icon">✒️</div>
+      <div class="link-text">
+        <span class="link-name">Kakuyomu</span>
+        <span class="link-desc">Proza i pisarstwo</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://www.youtube.com/@LilyPopins0512" target="_blank" rel="noopener">
+      <div class="link-icon">🎬</div>
+      <div class="link-text">
+        <span class="link-name">YouTube (LilyPopi)</span>
+        <span class="link-desc">Kanał wideo</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://azaleacreativeroom888.github.io" target="_blank" rel="noopener">
+      <div class="link-icon">🌸</div>
+      <div class="link-text">
+        <span class="link-name">Azalea Creative Room</span>
+        <span class="link-desc">Główna strona</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+  </div>
+
+  <!-- ─── CONTACT FORM ─── -->
+  <p class="section-label">Napisz do mnie</p>
+
+  <div class="form-card">
+    <p class="form-intro">
+      Pytania, uwagi, a może chcesz tylko powiedzieć cześć?
+      Wypełnij formularz — odezwę się na maila tak szybko, jak to możliwe.
+    </p>
+
+    <div data-fs-success class="form-success" style="display:none;">
+      Wiadomość wysłana — dziękuję!
+    </div>
+    <div data-fs-error class="form-error-global" style="display:none;"></div>
+
+    <form id="contact-form" action="https://formspree.io/f/maqvpvoz" method="POST">
+
+      <div class="form-group">
+        <label class="form-label" for="name">Imię</label>
+        <input class="form-input" type="text" id="name" name="name" placeholder="Twoje imię" required />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">E-mail <span class="required">*</span></label>
+        <input class="form-input" type="email" id="email" name="email" data-fs-field placeholder="przykład@email.com" required />
+        <span data-fs-error="email" class="field-error"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="message">Wiadomość <span class="required">*</span></label>
+        <textarea class="form-textarea" id="message" name="message" data-fs-field placeholder="Napisz tutaj…" rows="6" required></textarea>
+        <span data-fs-error="message" class="field-error"></span>
+      </div>
+
+      <button class="form-submit" type="submit" data-fs-submit-btn>
+        Wyślij wiadomość
+      </button>
+
+    </form>
+  </div>
+
+  <!-- ─── AI NOTICE ─── -->
+  <p class="notice">
+    Wszelkie obrazy, teksty i prace zamieszczone na tej stronie są chronione prawem autorskim.
+    Zabrania się wykorzystywania ich do trenowania modeli AI, śledzenia, nieautoryzowanego powielania,
+    redystrybucji lub wtórnego wykorzystania bez wyraźnej zgody autorki.
+  </p>
+
+</main>
+
+<footer>
+  <p>© 2025 <a href="index.html">Komiksowy Świat</a></p>
+</footer>
+
+<script>
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contact-form', formId: 'maqvpvoz' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+</body>
+</html>
